@@ -1,5 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import gdb
 
+import adbg.color
 import adbg.commands
 
 prompt = "➜ "
@@ -31,3 +34,5 @@ try:
     gdb.execute("set disassembly-flavor intel")
 except gdb.error:
     pass
+
+# print("test".test())

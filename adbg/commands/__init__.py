@@ -54,4 +54,7 @@ class GDBCommandWithArgParser():
 
         return GDBCommand(_ArgparsedCommand)
 
-import adbg.commands.test
+import adbg.commands.stack
+import adbg.commands.attach
+import adbg.commands.shellcmd
+# import adbg.commands.test
