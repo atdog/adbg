@@ -1,6 +1,16 @@
 import sys
 from types import ModuleType
 
+# constant for terminal color code style
+NORMAL = 0
+BOLD = 1
+DIM = 2
+UNDERLINED = 4
+BLINK = 5
+REVERSE = 7
+HIDDEN = 8
+
+# decorators
 def parametrized(dec):
     def decorator(*args, **kwargs):
         def wrapper(f):
@@ -9,9 +19,13 @@ def parametrized(dec):
     return decorator
 
 @parametrized
-def RGB(f, r, g, b):
+def STYLE(f, r, g, b, s=[]):
+    c = ""
+    for i in s:
+        c += "%d;" % (i)
+
     post = "\033[0m"
-    pre = "\033[38;2;%d;%d;%dm" % (r, g, b)
+    pre = "\033[%s38;2;%d;%d;%dm" % (c, r, g, b)
     def decorator(*args, **kwargs):
         value = f(*args, **kwargs)
         return pre + value + post
@@ -19,19 +33,19 @@ def RGB(f, r, g, b):
 
 class module(ModuleType):
 
-    @RGB(133, 193, 233)
+    @STYLE(133, 193, 233)
     def prompt(self, value):
         return value
 
-    @RGB(253, 254, 254)
+    @STYLE(253, 254, 254, [BOLD])
     def key(self, value):
         return value
 
-    @RGB(218, 247, 166)
+    @STYLE(218, 247, 166)
     def value(self, v):
         return v
 
-    @RGB(218, 247, 166)
+    @STYLE(218, 247, 166)
     def title(self, value):
         return value
 
