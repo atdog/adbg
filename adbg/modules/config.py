@@ -37,16 +37,8 @@ class PropBoolean(ConfigProp):
         # default setter
         super(PropBoolean, self).__set__(obj, value)
 
-class BaseModule(ModuleType):
-    def __init__(self, classtype):
-        self._type = classtype
-        super(BaseModule, self).__init__()
-
-def ClassFactory(name, base=BaseModule):
-    def __init__(self, **kwargs):
-        base.__init__(self, name[:-len("Class")])
-
-    newclass = type(name, (base,),{"__init__": __init__})
+def ClassFactory(name, base=ModuleType):
+    newclass = type(name, (base,),{})
     return newclass
 
 class module(ModuleType):
