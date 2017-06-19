@@ -2,14 +2,16 @@
 # -*- coding: utf-8 -*-
 import gdb
 
-import adbg.color
+import adbg.modules.color as color
 import adbg.modules.exception
 import adbg.modules.events
+import adbg.modules.config
 import adbg.modules.proc
 import adbg.modules.arch
+
 import adbg.commands
 
-prompt = "\033[38;2;133;193;233m➜ \033[0m"
+prompt = color.prompt("➜ ")
 
 pre_commands = """
 set confirm off

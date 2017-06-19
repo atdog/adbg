@@ -38,7 +38,7 @@ class PropBoolean(ConfigProp):
         super(PropBoolean, self).__set__(obj, value)
 
 def ClassFactory(name, base=ModuleType):
-    newclass = type(name, (base,),{})
+    newclass = type(name, (base,), {})
     return newclass
 
 class module(ModuleType):

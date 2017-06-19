@@ -1,8 +1,10 @@
-from adbg.commands import GDBCommand
-import adbg
-import adbg.modules.config as GDBConfig
 import inspect
 import sys
+
+import adbg
+import adbg.modules.config as GDBConfig
+import adbg.modules.color as color
+from adbg.commands import GDBCommand
 
 def dump_config():
     i = 0
@@ -13,7 +15,7 @@ def dump_config():
             v = getattr(scope, n)
             if(i % 6 == 5):
                 print()
-            sys.stdout.write("\033[38;2;253;254;254m%s\033[0m: \033[38;2;218;247;166m%s\033[0m\t" % (n, v))
+            sys.stdout.write("%s: %s\t" % (color.key(n), color.value(str(v))))
             i += 1
     print()
 
