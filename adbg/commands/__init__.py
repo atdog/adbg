@@ -21,8 +21,7 @@ class _Command(gdb.Command):
         try:
             return self(*argv)
         except TypeError:
-            if debug:
-                print(traceback.format_exc())
+            print(traceback.format_exc())
             raise
 
     def __call__(self, *arg, **kwargs):
@@ -54,7 +53,8 @@ class GDBCommandWithArgParser():
 
         return GDBCommand(_ArgparsedCommand)
 
-import adbg.commands.stack
+import adbg.commands.context
 import adbg.commands.attach
 import adbg.commands.shellcmd
+import adbg.commands.config
 # import adbg.commands.test

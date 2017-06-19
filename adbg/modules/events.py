@@ -1,6 +1,7 @@
 import sys
 import gdb
 import functools
+import adbg
 
 def connect(func, event_handler, name=''):
     @functools.wraps(func)
@@ -8,7 +9,7 @@ def connect(func, event_handler, name=''):
         try:
             func()
         except Exception as e:
-            pwndbg.exception.handle()
+            adbg.modules.exception.handle()
             raise e
 
     event_handler.connect(caller)
@@ -17,3 +18,5 @@ def connect(func, event_handler, name=''):
 def stop(func):
     return connect(func, gdb.events.stop, 'stop')
 
+def start(func):
+    return connect(func, gdb.events.stop, 'start')

@@ -3,9 +3,13 @@
 import gdb
 
 import adbg.color
+import adbg.modules.exception
+import adbg.modules.events
+import adbg.modules.proc
+import adbg.modules.arch
 import adbg.commands
 
-prompt = "➜ "
+prompt = "\033[38;2;133;193;233m➜ \033[0m"
 
 pre_commands = """
 set confirm off
@@ -14,7 +18,7 @@ set prompt %s
 set height 0
 set history expansion on
 set history save on
-set follow-fork-mode child
+set follow-fork-mode parent
 set backtrace past-main on
 set step-mode on
 set print pretty on
@@ -34,5 +38,3 @@ try:
     gdb.execute("set disassembly-flavor intel")
 except gdb.error:
     pass
-
-# print("test".test())
