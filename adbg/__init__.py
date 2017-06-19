@@ -11,7 +11,7 @@ import adbg.modules.arch
 
 import adbg.commands
 
-prompt = color.prompt("➜ ")
+prompt = color.prompt("➜  ")
 
 pre_commands = """
 set confirm off

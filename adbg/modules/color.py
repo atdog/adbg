@@ -19,7 +19,7 @@ def parametrized(dec):
     return decorator
 
 @parametrized
-def STYLE(f, r, g, b, s=[]):
+def STYLE(f, r, g, b, *s):
     c = ""
     for i in s:
         c += "%d;" % (i)
@@ -37,7 +37,7 @@ class module(ModuleType):
     def prompt(self, value):
         return value
 
-    @STYLE(253, 254, 254, [BOLD])
+    @STYLE(253, 254, 254, BOLD)
     def key(self, value):
         return value
 
@@ -45,7 +45,7 @@ class module(ModuleType):
     def value(self, v):
         return v
 
-    @STYLE(218, 247, 166)
+    @STYLE(248, 196, 113, BOLD)
     def title(self, value):
         return value
 

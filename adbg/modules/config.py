@@ -22,13 +22,18 @@ class PropBoolean(ConfigProp):
             elif value.lower() == "off":
                 value = False
             else:
-                value = -1
+                value = int(value)
         elif type(value) is not int:
             value = -1
 
         if value < 0 or value > 1:
             print('value must be boolean (0 or 1)')
             raise AttributeError
+
+        if value == 1:
+            value = True
+        else:
+            value = False
 
         return value
 
@@ -46,14 +51,17 @@ class module(ModuleType):
         self.name = name
         super(module, self).__init__(name)
 
+    # hold class type
+    _class = {}
     member = {}
     def get_scope_class(self, scope):
         if scope not in dir(module):
-            self.member[scope] = []
             scope_class = ClassFactory(scope)
-            setattr(module, scope, scope_class)
+            setattr(module, scope, scope_class(scope))
+            self.member[scope] = []
+            self._class[scope] = scope_class
         else:
-            scope_class = getattr(module, scope)
+            scope_class = self._class[scope]
         return scope_class
 
     def boolean(self, scope, name, default):
