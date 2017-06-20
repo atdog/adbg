@@ -46,7 +46,6 @@ shellcmds = [
     "cyclic", # pwntools
     "date",
     "diff",
-    "disasm", # pwntools
     "egrep",
     # "find", don't expose find as its an internal gdb command
     "grep",

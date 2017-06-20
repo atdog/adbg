@@ -57,4 +57,5 @@ import adbg.commands.context
 import adbg.commands.attach
 import adbg.commands.shellcmd
 import adbg.commands.config
+import adbg.commands.disasm
 # import adbg.commands.test

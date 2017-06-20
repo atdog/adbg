@@ -2,12 +2,17 @@
 # -*- coding: utf-8 -*-
 import gdb
 
+# import global function first
+import adbg.modules.utils
+
 import adbg.modules.color as color
 import adbg.modules.exception
 import adbg.modules.events
 import adbg.modules.config
 import adbg.modules.proc
 import adbg.modules.arch
+import adbg.modules.register
+import adbg.modules.memory
 
 import adbg.commands
 

@@ -13,7 +13,7 @@ class ConfigProp(object):
 class PropBoolean(ConfigProp):
     def __init__(self, default):
         value = self.sanatize(default)
-        super(PropBoolean, self).__init__(value)
+        super(self.__class__, self).__init__(value)
 
     def sanatize(self, value):
         if type(value) is str:
@@ -23,7 +23,9 @@ class PropBoolean(ConfigProp):
                 value = False
             else:
                 value = int(value)
-        elif type(value) is not int:
+        elif type(value) is bool:
+            return value
+        else:
             value = -1
 
         if value < 0 or value > 1:
@@ -40,11 +42,34 @@ class PropBoolean(ConfigProp):
     def __set__(self, obj, value):
         value = self.sanatize(value)
         # default setter
-        super(PropBoolean, self).__set__(obj, value)
+        super(self.__class__, self).__set__(obj, value)
+
+class PropInt(ConfigProp):
+    def __init__(self, default):
+        value = self.sanatize(default)
+        super(self.__class__, self).__init__(value)
+
+    def sanatize(self, value):
+        value = int(value)
+        return value
+
+    def __set__(self, obj, value):
+        value = self.sanatize(value)
+        # default setter
+        super(self.__class__, self).__set__(obj, value)
 
 def ClassFactory(name, base=ModuleType):
     newclass = type(name, (base,), {})
     return newclass
+
+def scope_prop(f):
+    def wrapper(*args):
+        self, scope_name, key, value = args
+        prop = f(*args)
+        scope_class = self.get_scope_class(scope_name)
+        self.member[scope_name].append(key)
+        setattr(scope_class, key, prop)
+    return wrapper
 
 class module(ModuleType):
     def __init__(self, name):
@@ -64,9 +89,12 @@ class module(ModuleType):
             scope_class = self._class[scope]
         return scope_class
 
+    @scope_prop
     def boolean(self, scope, name, default):
-        scope_class = self.get_scope_class(scope)
-        self.member[scope].append(name)
-        setattr(scope_class, name, PropBoolean(default))
+        return PropBoolean(default)
+
+    @scope_prop
+    def int(self, scope, name, default):
+        return PropInt(default)
 
 sys.modules[__name__] = module(__name__)

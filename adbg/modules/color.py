@@ -19,10 +19,15 @@ def parametrized(dec):
     return decorator
 
 @parametrized
-def STYLE(f, r, g, b, *s):
+def STYLE(f, code, *s):
     c = ""
     for i in s:
         c += "%d;" % (i)
+
+    code = int(code[1:], 16)
+    r = code >> 16 & 0x0ff
+    g = code >> 8 & 0x0ff
+    b = code & 0x0ff
 
     post = "\033[0m"
     pre = "\033[%s38;2;%d;%d;%dm" % (c, r, g, b)
@@ -33,20 +38,49 @@ def STYLE(f, r, g, b, *s):
 
 class module(ModuleType):
 
-    @STYLE(133, 193, 233)
+    @STYLE('#85C1E9')
     def prompt(self, value):
         return value
 
-    @STYLE(253, 254, 254, BOLD)
+    @STYLE('#FDFEFE', BOLD)
     def key(self, value):
         return value
 
-    @STYLE(218, 247, 166)
+    @STYLE('#DAF7A6')
     def value(self, v):
         return v
 
-    @STYLE(248, 196, 113, BOLD)
+    @STYLE('#F5B041', BOLD)
     def title(self, value):
         return value
+
+    @STYLE('#CACFD2')
+    def stack_val_freed(self, value):
+        return value
+
+    @STYLE('#CACFD2', BOLD)
+    def stack_val_inuse(self, value):
+        return value
+
+    @STYLE('#ABEBC6', BOLD, UNDERLINED)
+    def stack_val_sp(self, value):
+        return value
+
+    @STYLE('#F9E79F', BOLD)
+    def stack_adr(self, value):
+        return value
+
+    @STYLE('#EC7063', BOLD)
+    def code_adr(self, value):
+        return value
+
+    @STYLE('#D7BDE2', BOLD)
+    def code_val_pc(self, value):
+        return value
+
+    @STYLE('#E59866', BOLD)
+    def banner(self, value):
+        value = " " + value + " "
+        return value.center(20, '-')
 
 sys.modules[__name__] = module(__name__)
