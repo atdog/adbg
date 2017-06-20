@@ -1,4 +1,5 @@
 import sys
+import struct
 import gdb
 import adbg
 import adbg.modules.config as config
@@ -10,8 +11,11 @@ from adbg.commands.disasm import disasm_pc
 from adbg.commands import GDBCommand
 
 config.boolean('context', 'reg', "on")
+config.int('context', 'reg_w', "4")
+
 config.boolean('context', 'code', "on")
 config.int('context', 'code_s', "10")
+
 config.boolean('context', 'stack', "on")
 config.int('context', 'stack_w', "5")
 config.int('context', 'stack_h', "5")
@@ -20,7 +24,27 @@ config.int('context', 'stack_h', "5")
 @GDBCommand
 def reg():
     print(color.banner('reg'))
-    print('reg')
+
+    if arch.endian == 'little':
+        endian = ">"
+    else:
+        endian = "<"
+
+    i = 0
+    for r in register:
+        if i % config.context.reg_w == 0 and i != 0:
+            print()
+        if arch.ptrsize == 4:
+            value = "0x" + enhex(struct.pack('%si' % (endian), r.value))
+        elif arch.ptrsize == 8:
+            value = "0x" + enhex(struct.pack('%sq' % (endian), r.value))
+        else:
+            raise
+        name = color.reg_name(r.name.rjust(4, ' '))
+        value = color.reg_value(value)
+        sys.stdout.write("%s: %s " % (name, value))
+        i += 1
+    print()
 
 @GDBCommand
 def code():

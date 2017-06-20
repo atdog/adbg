@@ -78,6 +78,14 @@ class module(ModuleType):
     def code_val_pc(self, value):
         return value
 
+    @STYLE('#A9DFBF', BOLD)
+    def reg_name(self, value):
+        return value
+
+    @STYLE('#C2CFD2', BOLD)
+    def reg_value(self, value):
+        return value
+
     @STYLE('#E59866', BOLD)
     def banner(self, value):
         value = " " + value + " "
