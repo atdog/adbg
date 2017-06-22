@@ -35,9 +35,11 @@ def reg():
         if i % config.context.reg_w == 0 and i != 0:
             print()
         if arch.ptrsize == 4:
-            value = "0x" + enhex(struct.pack('%si' % (endian), r.value))
+            value = r.value & 0xffffffff
+            value = "0x" + enhex(struct.pack('%sI' % (endian), value))
         elif arch.ptrsize == 8:
-            value = "0x" + enhex(struct.pack('%sq' % (endian), r.value))
+            value = r.value & 0xffffffffffffffff
+            value = "0x" + enhex(struct.pack('%sQ' % (endian), value))
         else:
             raise
         name = color.reg_name(r.name.rjust(4, ' '))
@@ -64,7 +66,6 @@ def code():
 @GDBCommand
 def stack():
     print(color.banner('stack'))
-    # print(register.stack.name)
     read_from = register.stack.value - arch.ptrsize * config.context.stack_w
     size = arch.ptrsize * config.context.stack_w * config.context.stack_h
     mem = memory.read(read_from, size).tobytes()
@@ -83,7 +84,7 @@ def stack():
             else:
                 val = color.stack_val_inuse("0x%s " % enhex(data))
             sys.stdout.write(val)
-            i += 8
+            i += arch.ptrsize
         print()
 
 @GDBCommand
