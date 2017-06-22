@@ -19,6 +19,7 @@ class CSArch():
 
 arch_constant = {}
 arch_constant['x86-64'] = CSArch(CS_ARCH_X86, CS_MODE_64)
+arch_constant['i386'] = CSArch(CS_ARCH_X86, CS_MODE_32)
 
 
 def disasm_pc(pc=None, line=10):
@@ -51,7 +52,7 @@ def disasm_pc(pc=None, line=10):
 @GDBCommand
 def disasm(pc=None):
     if not pc:
-        print("please specify the PC assress to disassemble")
+        print("please specify the PC address to disassemble")
         return
 
     result = disasm_pc(pc)
