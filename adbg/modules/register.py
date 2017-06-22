@@ -102,6 +102,7 @@ i386 = RegisterSet( pc      = 'eip',
 
 arch_to_reg = {}
 arch_to_reg['x86-64'] = amd64
+arch_to_reg['i386'] = i386
 
 class module(ModuleType):
     def __init__(self, name):
